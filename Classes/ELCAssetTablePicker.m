@@ -26,8 +26,8 @@
     self.elcAssets = tempArray;
     [tempArray release];
 	
-	UIBarButtonItem *doneButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneAction:)] autorelease];
-	[self.navigationItem setRightBarButtonItem:doneButtonItem];
+//	UIBarButtonItem *doneButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneAction:)] autorelease];
+//	[self.navigationItem setRightBarButtonItem:doneButtonItem];
 	[self.navigationItem setTitle:@"Loading..."];
 
 	[self performSelectorInBackground:@selector(preparePhotos) withObject:nil];

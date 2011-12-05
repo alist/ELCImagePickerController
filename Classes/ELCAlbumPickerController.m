@@ -21,9 +21,9 @@
 	
 	[self.navigationItem setTitle:@"Loading..."];
 
-    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self.parent action:@selector(cancelImagePicker)];
-	[self.navigationItem setRightBarButtonItem:cancelButton];
-	[cancelButton release];
+//    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self.parent action:@selector(cancelImagePicker)];
+//	[self.navigationItem setRightBarButtonItem:cancelButton];
+//	[cancelButton release];
 
     NSMutableArray *tempArray = [[NSMutableArray alloc] init];
 	self.assetGroups = tempArray;
@@ -53,9 +53,16 @@
         // Group Enumerator Failure Block
         void (^assetGroupEnumberatorFailure)(NSError *) = ^(NSError *error) {
             
-            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Album Error: %@ - %@", [error localizedDescription], [error localizedRecoverySuggestion]] delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-            [alert show];
-            [alert release];
+			if ([error code] == ALAssetsLibraryAccessGloballyDeniedError){
+				UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Access Needed" message:@"Your library include personal location information.\nTo access your library, please enable Location Services (in Settings > General)." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+				[alert show];
+				[alert release];
+			}else{
+			
+				UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Album Error: %@ - %@", [error localizedDescription], [error localizedRecoverySuggestion]] delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+				[alert show];
+				[alert release];
+			}
             
             NSLog(@"A problem occured %@", [error description]);	                                 
         };	
@@ -72,7 +79,7 @@
 -(void)reloadTableView {
 	
 	[self.tableView reloadData];
-	[self.navigationItem setTitle:@"Select an Album"];
+	[self.navigationItem setTitle:@"Swÿp Photos"];
 }
 
 -(void)selectedAssets:(NSArray*)_assets {
