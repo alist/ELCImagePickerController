@@ -12,6 +12,8 @@
 - (void)viewDidLoad {
 	[super viewDidLoad];
 	
+	[self.tableView setContentInset:UIEdgeInsetsMake(0, 0, 75, 0)];
+	
 	if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]){
 		UIBarButtonItem * cameraButton	=	[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCamera target:self action:@selector(openCamera:)];
 		[self.navigationItem setRightBarButtonItem:cameraButton];
@@ -52,7 +54,8 @@
 
 -(void)	assetLibraryChanged: (id) sender{
 	[self.navigationItem setTitle:@"Loading..."];
-	
+	[self.assetGroups removeAllObjects];
+	[self.tableView reloadData];
 	//    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self.parent action:@selector(cancelImagePicker)];
 	//	[self.navigationItem setRightBarButtonItem:cancelButton];
 	//	[cancelButton release];

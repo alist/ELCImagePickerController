@@ -34,6 +34,8 @@
     
     // Show partial while full list loads
 	[self.tableView performSelector:@selector(reloadData) withObject:nil afterDelay:.5];
+	
+	[self.tableView setContentInset:UIEdgeInsetsMake(0, 0, 75, 0)];
 }
 
 -(void)preparePhotos {
