@@ -1,3 +1,4 @@
+AS USED and Modified in Swyp
 ****** HOW TO USE ******
 
 The image picker is created and displayed in a very similar manner to the UIImagePickerController. The sample application  shows its use. To display the controller you instantiate it and display it modally like so.
