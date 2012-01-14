@@ -9,7 +9,7 @@
 #import "ELCAssetCell.h"
 #import "ELCAsset.h"
 #import "ELCAlbumPickerController.h"
-
+#import "UIDevice+iPad.h"
 
 @implementation ELCAssetTablePicker
 
@@ -17,7 +17,18 @@
 @synthesize selectedAssetsLabel;
 @synthesize assetGroup, elcAssets;
 
+static NSUInteger rowsPerColumn;
+
+-(NSUInteger)cellSize {
+    return [[UIDevice currentDevice] isIPad] ? 96 : 80;
+}
+
+-(void)updateRowsPerColumn {
+    rowsPerColumn = floor(self.view.frame.size.width/[self cellSize]);
+}
+
 -(void)viewDidLoad {
+    [self updateRowsPerColumn];
         
 	[self.tableView setSeparatorColor:[UIColor clearColor]];
 	[self.tableView setAllowsSelection:NO];
@@ -88,46 +99,29 @@
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return ceil([self.assetGroup numberOfAssets] / 4.0);
+    NSLog(@"%i rows per column.", rowsPerColumn);
+    return ceil([self.assetGroup numberOfAssets] / rowsPerColumn);
 }
 
 - (NSArray*)assetsForIndexPath:(NSIndexPath*)_indexPath {
     
-	int index = (_indexPath.row*4);
-	int maxIndex = (_indexPath.row*4+3);
+	int index = (_indexPath.row*rowsPerColumn);
+	int maxIndex = (_indexPath.row*rowsPerColumn+(rowsPerColumn-1));
     
 	// NSLog(@"Getting assets for %d to %d with array count %d", index, maxIndex, [assets count]);
     
-	if(maxIndex < [self.elcAssets count]) {
-        
-		return [NSArray arrayWithObjects:[self.elcAssets objectAtIndex:index],
-				[self.elcAssets objectAtIndex:index+1],
-				[self.elcAssets objectAtIndex:index+2],
-				[self.elcAssets objectAtIndex:index+3],
-				nil];
-	}
+    NSMutableArray *assetArray = [NSMutableArray array];
+    for (int i = 0; i < rowsPerColumn; i++) {
+        if ((maxIndex-i) < [self.elcAssets count]) {
+            [assetArray addObject:[self.elcAssets objectAtIndex:index+(rowsPerColumn-i-1)]];
+        }
+    }
     
-	else if(maxIndex-1 < [self.elcAssets count]) {
-        
-		return [NSArray arrayWithObjects:[self.elcAssets objectAtIndex:index],
-				[self.elcAssets objectAtIndex:index+1],
-				[self.elcAssets objectAtIndex:index+2],
-				nil];
-	}
-    
-	else if(maxIndex-2 < [self.elcAssets count]) {
-        
-		return [NSArray arrayWithObjects:[self.elcAssets objectAtIndex:index],
-				[self.elcAssets objectAtIndex:index+1],
-				nil];
-	}
-    
-	else if(maxIndex-3 < [self.elcAssets count]) {
-        
-		return [NSArray arrayWithObject:[self.elcAssets objectAtIndex:index]];
-	}
-    
-	return nil;
+    if (assetArray.count > 0) {
+        return [NSArray arrayWithArray:assetArray];      
+    } else {
+        return nil;
+    }
 }
 
 // Customize the appearance of table view cells.
@@ -150,8 +144,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-	return 79;
+	return [[UIDevice currentDevice] isIPad] ? 95 : 79;
 }
 
 - (int)totalSelectedAssets {

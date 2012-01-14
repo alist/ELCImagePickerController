@@ -7,6 +7,7 @@
 
 #import "ELCAssetCell.h"
 #import "ELCAsset.h"
+#import "UIDevice+iPad.h"
 
 @implementation ELCAssetCell
 
@@ -34,7 +35,10 @@
 
 -(void)layoutSubviews {
     
-	CGRect frame = CGRectMake(4, 2, 75, 75);
+    int sideMargin = [[UIDevice currentDevice] isIPad] ? 18 : 4;
+    int topMargin = [[UIDevice currentDevice] isIPad] ? 10 : 2;
+    
+	CGRect frame = CGRectMake(sideMargin, topMargin, 75, 75);
 	
 	for(ELCAsset *elcAsset in self.rowAssets) {
 		
@@ -42,7 +46,7 @@
 		[elcAsset addGestureRecognizer:[[[UITapGestureRecognizer alloc] initWithTarget:elcAsset action:@selector(toggleSelection)] autorelease]];
 		[self addSubview:elcAsset];
 		
-		frame.origin.x = frame.origin.x + frame.size.width + 4;
+		frame.origin.x = frame.origin.x + frame.size.width + sideMargin;
 	}
 }
 
