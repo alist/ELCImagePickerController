@@ -16,6 +16,8 @@
 	int selectedAssets;
 	
 	id parent;
+    
+    BOOL isInCheckMode;
 	
 	NSOperationQueue *queue;
 }

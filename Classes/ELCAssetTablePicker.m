@@ -25,11 +25,14 @@ static NSUInteger rowsPerColumn;
 
 -(void)updateRowsPerColumn {
     rowsPerColumn = floor(self.view.frame.size.width/[self cellSize]);
+    NSLog(@"%i rows per column.", rowsPerColumn);
 }
 
--(void)viewDidLoad {
-    [self updateRowsPerColumn];
-        
+-(void)toggleCheckMode {
+    isInCheckMode = !isInCheckMode;
+}
+
+-(void)viewDidLoad {        
 	[self.tableView setSeparatorColor:[UIColor clearColor]];
 	[self.tableView setAllowsSelection:NO];
 
@@ -39,6 +42,15 @@ static NSUInteger rowsPerColumn;
 	
 //	UIBarButtonItem *doneButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneAction:)] autorelease];
 //	[self.navigationItem setRightBarButtonItem:doneButtonItem];
+    
+    UIBarButtonItem *selectModeButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(toggleCheckMode)];
+    
+    self.navigationItem.rightBarButtonItem = selectModeButton;
+    
+    isInCheckMode = YES;
+    
+    [selectModeButton release];
+    
 	[self.navigationItem setTitle:@"Loading..."];
 
 	[self performSelectorInBackground:@selector(preparePhotos) withObject:nil];
@@ -47,6 +59,10 @@ static NSUInteger rowsPerColumn;
 	[self.tableView performSelector:@selector(reloadData) withObject:nil afterDelay:.5];
 	
 	[self.tableView setContentInset:UIEdgeInsetsMake(0, 0, 75, 0)];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [self updateRowsPerColumn];
 }
 
 -(void)preparePhotos {
@@ -99,7 +115,6 @@ static NSUInteger rowsPerColumn;
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    NSLog(@"%i rows per column.", rowsPerColumn);
     return ceil([self.assetGroup numberOfAssets] / rowsPerColumn);
 }
 
@@ -160,6 +175,11 @@ static NSUInteger rowsPerColumn;
 	}
     
     return count;
+}
+
+-(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+    [self updateRowsPerColumn];
+    [self.tableView reloadData];
 }
 
 - (void)dealloc 

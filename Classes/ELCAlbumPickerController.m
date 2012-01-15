@@ -79,7 +79,7 @@
 -(void)reloadTableView {
 	
 	[self.tableView reloadData];
-	[self.navigationItem setTitle:@"Swÿp Photos"];
+	[self.navigationItem setTitle:@"Pick Photos"];
 }
 
 -(void)selectedAssets:(NSArray*)_assets {
