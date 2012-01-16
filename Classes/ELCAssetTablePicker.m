@@ -16,6 +16,7 @@
 @synthesize parent;
 @synthesize selectedAssetsLabel;
 @synthesize assetGroup, elcAssets;
+@synthesize isInCheckMode;
 
 static NSUInteger rowsPerColumn;
 
@@ -30,6 +31,7 @@ static NSUInteger rowsPerColumn;
 
 -(void)toggleCheckMode {
     isInCheckMode = !isInCheckMode;
+    self.navigationItem.rightBarButtonItem.tintColor = isInCheckMode ? [UIColor blueColor] : [UIColor blackColor];
 }
 
 -(void)viewDidLoad {        
@@ -47,7 +49,7 @@ static NSUInteger rowsPerColumn;
     
     self.navigationItem.rightBarButtonItem = selectModeButton;
     
-    isInCheckMode = YES;
+    [self toggleCheckMode];
     
     [selectModeButton release];
     

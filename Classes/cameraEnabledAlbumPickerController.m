@@ -11,7 +11,7 @@
 @implementation cameraEnabledAlbumPickerController
 - (void)viewDidLoad {
 	[super viewDidLoad];
-	
+    	
 	[self.tableView setContentInset:UIEdgeInsetsMake(0, 0, 75, 0)];
 	
 	if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]){

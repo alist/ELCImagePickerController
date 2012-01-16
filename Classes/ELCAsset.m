@@ -45,7 +45,9 @@
 
 -(void)toggleSelection {
     
-	overlayView.hidden = !overlayView.hidden;
+    if([(ELCAssetTablePicker*)self.parent isInCheckMode]) {
+        overlayView.hidden = !overlayView.hidden;
+    }
     
 //    if([(ELCAssetTablePicker*)self.parent totalSelectedAssets] >= 10) {
 //        
