@@ -44,17 +44,12 @@
 }
 
 -(void)toggleSelection {
-    
-    overlayView.hidden = !overlayView.hidden;
-    
-//    if([(ELCAssetTablePicker*)self.parent totalSelectedAssets] >= 10) {
-//        
-//        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Maximum Reached" message:@"" delegate:self cancelButtonTitle:nil otherButtonTitles:@"Ok", nil];
-//		[alert show];
-//		[alert release];	
-//
-//        [(ELCAssetTablePicker*)self.parent doneAction:nil];
-//    }
+        
+    if([(ELCAssetTablePicker*)self.parent totalSelectedAssets] < 4) {
+        overlayView.hidden = !overlayView.hidden;
+    }else{
+		overlayView.hidden = YES;
+	}
 }
 
 -(BOOL)selected {
