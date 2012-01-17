@@ -59,6 +59,11 @@
 	[super release];
 }
 
+-(void)viewWillAppear:(BOOL)animated{
+	[super viewWillAppear:animated];
+	[self.tableView reloadData];
+}
+
 -(void)	assetLibraryChanged: (id) sender{
 	[self.navigationItem setTitle:@"Loading..."];
 	[self.assetGroups removeAllObjects];
@@ -67,9 +72,6 @@
 	//	[self.navigationItem setRightBarButtonItem:cancelButton];
 	//	[cancelButton release];
 	
-    NSMutableArray *tempArray = [[NSMutableArray alloc] init];
-	self.assetGroups = tempArray;
-    [tempArray release];
     
     library = [[ALAssetsLibrary alloc] init];      
 	
