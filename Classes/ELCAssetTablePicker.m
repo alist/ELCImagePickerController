@@ -16,7 +16,6 @@
 @synthesize parent;
 @synthesize selectedAssetsLabel;
 @synthesize assetGroup, elcAssets;
-@synthesize isInCheckMode;
 
 static NSUInteger rowsPerColumn;
 
@@ -29,11 +28,6 @@ static NSUInteger rowsPerColumn;
     NSLog(@"%i rows per column.", rowsPerColumn);
 }
 
--(void)toggleCheckMode {
-    isInCheckMode = !isInCheckMode;
-    self.navigationItem.rightBarButtonItem.tintColor = isInCheckMode ? [UIColor blueColor] : [UIColor blackColor];
-}
-
 -(void)viewDidLoad {        
 	[self.tableView setSeparatorColor:[UIColor clearColor]];
 	[self.tableView setAllowsSelection:NO];
@@ -41,17 +35,6 @@ static NSUInteger rowsPerColumn;
     NSMutableArray *tempArray = [[NSMutableArray alloc] init];
     self.elcAssets = tempArray;
     [tempArray release];
-	
-//	UIBarButtonItem *doneButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneAction:)] autorelease];
-//	[self.navigationItem setRightBarButtonItem:doneButtonItem];
-    
-    UIBarButtonItem *selectModeButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(toggleCheckMode)];
-    
-    self.navigationItem.rightBarButtonItem = selectModeButton;
-    
-    [self toggleCheckMode];
-    
-    [selectModeButton release];
     
 	[self.navigationItem setTitle:@"Loading..."];
 

@@ -9,9 +9,10 @@
 #import "cameraEnabledAlbumPickerController.h"
 
 @implementation cameraEnabledAlbumPickerController
-- (void)viewDidLoad {
+
+-(void)viewDidLoad {
 	[super viewDidLoad];
-    	
+        	
 	[self.tableView setContentInset:UIEdgeInsetsMake(0, 0, 75, 0)];
 	
 	if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]){
@@ -21,6 +22,12 @@
 	}
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(assetLibraryChanged:) name:ALAssetsLibraryChangedNotification object:nil];
+}
+
+-(void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    self.navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
 }
 
 -(void) openCamera:(id)sender{

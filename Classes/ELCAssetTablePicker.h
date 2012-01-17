@@ -16,15 +16,12 @@
 	int selectedAssets;
 	
 	id parent;
-    
-    BOOL isInCheckMode;
-	
+    	
 	NSOperationQueue *queue;
 }
 
 @property (nonatomic, assign) id parent;
 @property (nonatomic, assign) ALAssetsGroup *assetGroup;
-@property (nonatomic, assign) BOOL isInCheckMode;
 @property (nonatomic, retain) NSMutableArray *elcAssets;
 @property (nonatomic, retain) IBOutlet UILabel *selectedAssetsLabel;
 
