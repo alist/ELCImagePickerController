@@ -28,9 +28,9 @@
     [super viewWillAppear:animated];
     
     [self.tableView reloadData];
-    
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackTranslucent];
-    self.navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
+}
+-(void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
 }
 
 -(void) openCamera:(id)sender{
@@ -56,7 +56,7 @@
 -(void)	dealloc{
 	[_imagePickerPopover release];
 	_imagePickerPopover		= nil;
-	
+    	
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 
 	[super release];
@@ -69,54 +69,53 @@
 	//    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self.parent action:@selector(cancelImagePicker)];
 	//	[self.navigationItem setRightBarButtonItem:cancelButton];
 	//	[cancelButton release];
-	
+    
+    NSLog(@"ASSET LIBRARY CHANGED.");
     
     library = [[ALAssetsLibrary alloc] init];      
 	
     // Load Albums into assetGroups
-    dispatch_async(dispatch_get_main_queue(), ^
-				   {
-					   NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-					   
-					   // Group enumerator Block
-					   void (^assetGroupEnumerator)(ALAssetsGroup *, BOOL *) = ^(ALAssetsGroup *group, BOOL *stop) 
-					   {
-						   if (group == nil) 
-						   {
-							   return;
-						   }
-						   
-						   [self.assetGroups addObject:group];
-						   
-						   // Reload albums
-						   [self performSelectorOnMainThread:@selector(reloadTableView) withObject:nil waitUntilDone:YES];
-					   };
-					   
-					   // Group Enumerator Failure Block
-					   void (^assetGroupEnumberatorFailure)(NSError *) = ^(NSError *error) {
-						   
-						   if ([error code] == ALAssetsLibraryAccessGloballyDeniedError){
-							   UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Access Needed" message:@"Your library include personal location information.\nTo access your library, please enable Location Services (in Settings > General)." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-							   [alert show];
-							   [alert release];
-						   }else{
-							   
-							   UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Album Error: %@ - %@", [error localizedDescription], [error localizedRecoverySuggestion]] delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-							   [alert show];
-							   [alert release];
-						   }
-						   
-						   NSLog(@"A problem occured %@", [error description]);	                                 
-					   };	
-					   
-					   // Enumerate Albums
-					   [library enumerateGroupsWithTypes:(ALAssetsGroupSavedPhotos|ALAssetsGroupAlbum)
-											  usingBlock:assetGroupEnumerator 
-											failureBlock:assetGroupEnumberatorFailure];
-					   
-					   [pool release];
-				   });    
-
+   dispatch_async(dispatch_get_main_queue(), ^{
+           NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+           
+           // Group enumerator Block
+           void (^assetGroupEnumerator)(ALAssetsGroup *, BOOL *) = ^(ALAssetsGroup *group, BOOL *stop) 
+           {
+               if (group == nil) 
+               {
+                   return;
+               }
+               
+               [self.assetGroups addObject:group];
+               
+               // Reload albums
+               [self performSelectorOnMainThread:@selector(reloadTableView) withObject:nil waitUntilDone:YES];
+           };
+           
+           // Group Enumerator Failure Block
+           void (^assetGroupEnumberatorFailure)(NSError *) = ^(NSError *error) {
+               
+               if ([error code] == ALAssetsLibraryAccessGloballyDeniedError){
+                   UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Access Needed" message:@"Your library include personal location information.\nTo access your library, please enable Location Services (in Settings > General)." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+                   [alert show];
+                   [alert release];
+               }else{
+                   
+                   UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Album Error: %@ - %@", [error localizedDescription], [error localizedRecoverySuggestion]] delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+                   [alert show];
+                   [alert release];
+               }
+               
+               NSLog(@"A problem occured %@", [error description]);	                                 
+           };	
+           
+           // Enumerate Albums
+           [library enumerateGroupsWithTypes:(ALAssetsGroupSavedPhotos|ALAssetsGroupAlbum)
+                                  usingBlock:assetGroupEnumerator 
+                                failureBlock:assetGroupEnumberatorFailure];
+           
+           [pool release];
+       });    
 }
 
 #pragma mark - Delegation 

@@ -73,7 +73,8 @@
                              failureBlock:assetGroupEnumberatorFailure];
         
         [pool release];
-    });    
+    });
+
 }
 
 -(void)reloadTableView {

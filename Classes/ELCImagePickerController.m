@@ -22,6 +22,7 @@
 	}
 }
 
+
 -(void)selectedAssets:(NSArray*)_assets {
 
 	NSMutableArray *returnArray = [[[NSMutableArray alloc] init] autorelease];
@@ -38,12 +39,18 @@
 		[workingDictionary release];	
 	}
 	
-    [self popToRootViewControllerAnimated:NO];
+    [self popToRootViewControllerAnimated:YES];
     [[self parentViewController] dismissModalViewControllerAnimated:YES];
     
 	if([delegate respondsToSelector:@selector(elcImagePickerController:didFinishPickingMediaWithInfo:)]) {
 		[delegate performSelector:@selector(elcImagePickerController:didFinishPickingMediaWithInfo:) withObject:self withObject:[NSArray arrayWithArray:returnArray]];
 	}
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackTranslucent];
+    self.navigationBar.barStyle = UIBarStyleBlackTranslucent;
 }
 
 #pragma mark -
