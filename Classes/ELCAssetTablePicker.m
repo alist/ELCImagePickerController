@@ -52,7 +52,7 @@ static NSUInteger rowsPerColumn;
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [self updateRowsPerColumn];
+	[self performSelectorInBackground:@selector(preparePhotos) withObject:nil];
 }
 
 -(void)preparePhotos {
@@ -74,6 +74,7 @@ static NSUInteger rowsPerColumn;
      }];    
     NSLog(@"done enumerating photos");
 	
+    [self updateRowsPerColumn];
 	[self.tableView reloadData];
 	[self.navigationItem setTitle:@"Pick Photos"];
     
@@ -105,7 +106,7 @@ static NSUInteger rowsPerColumn;
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return MAX([self.assetGroup numberOfAssets]/rowsPerColumn, 1);
+    return ceil((float)[self.assetGroup numberOfAssets]/rowsPerColumn);
 }
 
 - (NSArray*)assetsForIndexPath:(NSIndexPath*)_indexPath {

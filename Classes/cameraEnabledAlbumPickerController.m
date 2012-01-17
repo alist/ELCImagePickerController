@@ -64,58 +64,59 @@
 
 -(void)	assetLibraryChanged: (id) sender{
 	[self.navigationItem setTitle:@"Loading..."];
-	[self.assetGroups removeAllObjects];
-	[self.tableView reloadData];
+    
 	//    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self.parent action:@selector(cancelImagePicker)];
 	//	[self.navigationItem setRightBarButtonItem:cancelButton];
 	//	[cancelButton release];
     
     NSLog(@"ASSET LIBRARY CHANGED.");
-    
-    library = [[ALAssetsLibrary alloc] init];      
-	
+    	
     // Load Albums into assetGroups
     dispatch_async(dispatch_get_main_queue(), ^{
-           NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-           
-           // Group enumerator Block
-           void (^assetGroupEnumerator)(ALAssetsGroup *, BOOL *) = ^(ALAssetsGroup *group, BOOL *stop) 
+        NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+
+        // Group enumerator Block
+        void (^assetGroupEnumerator)(ALAssetsGroup *, BOOL *) = ^(ALAssetsGroup *group, BOOL *stop) 
+        {
+           if (group == nil) 
            {
-               if (group == nil) 
-               {
-                   return;
-               }
-               
-               [self.assetGroups addObject:group];
-               
-               // Reload albums
-               [self performSelectorOnMainThread:@selector(reloadTableView) withObject:nil waitUntilDone:YES];
-           };
+               return;
+           }
            
-           // Group Enumerator Failure Block
-           void (^assetGroupEnumberatorFailure)(NSError *) = ^(NSError *error) {
-               
-               if ([error code] == ALAssetsLibraryAccessGloballyDeniedError){
-                   UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Access Needed" message:@"Your library include personal location information.\nTo access your library, please enable Location Services (in Settings > General)." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-                   [alert show];
-                   [alert release];
-               }else{
-                   
-                   UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Album Error: %@ - %@", [error localizedDescription], [error localizedRecoverySuggestion]] delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-                   [alert show];
-                   [alert release];
-               }
-               
-               NSLog(@"A problem occured %@", [error description]);	                                 
-           };	
+            [self.assetGroups addObject:group];
            
-           // Enumerate Albums
-           [library enumerateGroupsWithTypes:(ALAssetsGroupSavedPhotos|ALAssetsGroupSavedPhotos)
-                                  usingBlock:assetGroupEnumerator 
-                                failureBlock:assetGroupEnumberatorFailure];
+           // Reload albums
+           [self performSelectorOnMainThread:@selector(reloadTableView) withObject:nil waitUntilDone:YES];
+        };
+
+        // Group Enumerator Failure Block
+        void (^assetGroupEnumberatorFailure)(NSError *) = ^(NSError *error) {
            
-           [pool release];
-       });    
+           if ([error code] == ALAssetsLibraryAccessGloballyDeniedError){
+               UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Access Needed" message:@"Your library include personal location information.\nTo access your library, please enable Location Services (in Settings > General)." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+               [alert show];
+               [alert release];
+           }else{
+               
+               UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Album Error: %@ - %@", [error localizedDescription], [error localizedRecoverySuggestion]] delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+               [alert show];
+               [alert release];
+           }
+           
+           NSLog(@"A problem occured %@", [error description]);	                                 
+        };	
+
+        // Enumerate Albums
+        [self.assetGroups removeAllObjects];
+    
+        [library release]; library = nil;
+        library = [[ALAssetsLibrary alloc] init];
+        [library enumerateGroupsWithTypes:(ALAssetsGroupSavedPhotos|ALAssetsGroupSavedPhotos)
+                              usingBlock:assetGroupEnumerator 
+                            failureBlock:assetGroupEnumberatorFailure];
+       
+        [pool release];
+    });    
 }
 
 #pragma mark - Delegation 
