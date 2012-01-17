@@ -105,7 +105,7 @@ static NSUInteger rowsPerColumn;
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [self.assetGroup numberOfAssets];
+    return MAX([self.assetGroup numberOfAssets]/rowsPerColumn, 1);
 }
 
 - (NSArray*)assetsForIndexPath:(NSIndexPath*)_indexPath {
