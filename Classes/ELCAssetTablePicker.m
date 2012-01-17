@@ -28,7 +28,9 @@ static NSUInteger rowsPerColumn;
     NSLog(@"%i rows per column.", rowsPerColumn);
 }
 
--(void)viewDidLoad {        
+-(void)viewDidLoad {      
+    [super viewDidLoad];
+    
 	[self.tableView setSeparatorColor:[UIColor clearColor]];
 	[self.tableView setAllowsSelection:NO];
 
@@ -44,9 +46,12 @@ static NSUInteger rowsPerColumn;
 	[self.tableView performSelector:@selector(reloadData) withObject:nil afterDelay:.5];
 	
 	[self.tableView setContentInset:UIEdgeInsetsMake(0, 0, 75, 0)];
+    
+    [self updateRowsPerColumn];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
     [self updateRowsPerColumn];
 }
 

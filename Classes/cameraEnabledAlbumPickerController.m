@@ -20,13 +20,16 @@
 		[self.navigationItem setRightBarButtonItem:cameraButton];
 		[cameraButton release];
 	}
-	
+    
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(assetLibraryChanged:) name:ALAssetsLibraryChangedNotification object:nil];
 }
 
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
+    [self.tableView reloadData];
+    
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackTranslucent];
     self.navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
 }
 
@@ -57,11 +60,6 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 
 	[super release];
-}
-
--(void)viewWillAppear:(BOOL)animated{
-	[super viewWillAppear:animated];
-	[self.tableView reloadData];
 }
 
 -(void)	assetLibraryChanged: (id) sender{
@@ -112,7 +110,7 @@
 					   };	
 					   
 					   // Enumerate Albums
-					   [library enumerateGroupsWithTypes:ALAssetsGroupAll
+					   [library enumerateGroupsWithTypes:(ALAssetsGroupSavedPhotos|ALAssetsGroupSavedPhotos)
 											  usingBlock:assetGroupEnumerator 
 											failureBlock:assetGroupEnumberatorFailure];
 					   

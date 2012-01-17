@@ -68,7 +68,7 @@
         };	
                 
         // Enumerate Albums
-        [library enumerateGroupsWithTypes:ALAssetsGroupAll
+        [library enumerateGroupsWithTypes:(ALAssetsGroupSavedPhotos|ALAssetsGroupSavedPhotos)
                                usingBlock:assetGroupEnumerator 
                              failureBlock:assetGroupEnumberatorFailure];
         
@@ -77,7 +77,6 @@
 }
 
 -(void)reloadTableView {
-	
 	[self.tableView reloadData];
 	[self.navigationItem setTitle:@"Pick Photos"];
 }
