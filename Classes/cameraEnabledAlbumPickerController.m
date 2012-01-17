@@ -28,9 +28,9 @@
     [super viewWillAppear:animated];
     
     [self.tableView reloadData];
-    
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackTranslucent];
-    self.navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
+}
+-(void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
 }
 
 -(void) openCamera:(id)sender{
