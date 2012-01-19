@@ -111,7 +111,7 @@
     
         [library release]; library = nil;
         library = [[ALAssetsLibrary alloc] init];
-        [library enumerateGroupsWithTypes:(ALAssetsGroupSavedPhotos|ALAssetsGroupSavedPhotos)
+        [library enumerateGroupsWithTypes:ALAssetsGroupAll
                               usingBlock:assetGroupEnumerator 
                             failureBlock:assetGroupEnumberatorFailure];
        

@@ -38,6 +38,11 @@
     int sideMargin = [[UIDevice currentDevice] isIPad] ? 18 : 4;
     int topMargin = [[UIDevice currentDevice] isIPad] ? 10 : 2;
     
+    if ([[UIDevice currentDevice] isIPad] && 
+        UIDeviceOrientationIsLandscape([[UIDevice currentDevice] orientation])) {
+        sideMargin = 25;
+    }
+    
 	CGRect frame = CGRectMake(sideMargin, topMargin, 75, 75);
 	
 	for(ELCAsset *elcAsset in self.rowAssets) {
