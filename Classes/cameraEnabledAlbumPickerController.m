@@ -68,6 +68,8 @@
 	//    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self.parent action:@selector(cancelImagePicker)];
 	//	[self.navigationItem setRightBarButtonItem:cancelButton];
 	//	[cancelButton release];
+	
+	[[self parent] popToRootViewControllerAnimated:YES];
     
     NSLog(@"ASSET LIBRARY CHANGED.");
     	
@@ -130,6 +132,16 @@
 	}else{
 		[self dismissModalViewControllerAnimated:TRUE];
 	}
+		
+	NSMutableDictionary *workingDictionary = [NSMutableDictionary dictionary];
+	[workingDictionary setObject:@"kUTTypeImage" forKey:@"UIImagePickerControllerMediaType"];
+	[workingDictionary setObject:selectedImage forKey:@"UIImagePickerControllerOriginalImage"];
+			
+	    
+	if([[[self parent] delegate] respondsToSelector:@selector(elcImagePickerController:didFinishPickingMediaWithInfo:)]) {
+		[[[self parent] delegate] performSelector:@selector(elcImagePickerController:didFinishPickingMediaWithInfo:) withObject:self withObject:[NSArray arrayWithObject:workingDictionary]];
+	}
+	
 }
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker{
 	if (_imagePickerPopover){
